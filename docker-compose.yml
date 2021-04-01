@@ -1,0 +1,37 @@
+version: '3'
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - 8080:80
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./www/html:/var/www/html
+    depends_on:
+      - php
+
+  php:
+    build: ./php
+    volumes:
+      - ./www/html:/var/www/html
+    # depends_on:
+    #   - db
+
+  # なぜか怒られるのでコメントアウト
+  # ERROR: for db  Cannot start service db: OCI runtime create failed: container_linux.go:370: starting container process caused: process_linux.go:459: container init caused: rootfs_linux.go:59: mounting "/host_mnt/Users/miwa/study/php-practice/mysql/data" to rootfs at "/var/lib/docker/overlay2/bd8a3b4158c3f6aa0b9eb417a9dc4ac716d001443b49a0732f5e3f73ae6277a1/merged/var/lib/mysql" caused: not a directory: unknown: Are you trying to mount a directory onto a file (or vice-versa)? Check if the specified host path exists and is the expected type
+  # ERROR: Encountered errors while bringing up the project.
+  # db:
+  #   image: mysql:5.7
+  #   ports:
+  #     - 13306:3306
+  #   volumes:
+  #     - ./mysql/data:/var/lib/mysql
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: secret
+
+  # phpmyadmin:
+  #   image: phpmyadmin/phpmyadmin:latest
+  #   ports:
+  #     - 8888:80
+  #   depends_on:
+  #     - db
